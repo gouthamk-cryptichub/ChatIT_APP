@@ -5,28 +5,31 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (ctx, index) => Container(
-          padding: EdgeInsets.all(8),
-          child: Text('This works!'),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          // ignore: deprecated_member_use
-          Firestore.instance
-              .collection('chats/Es6kcu2Tji3PMLgT3FKL/messages')
-              .snapshots()
-              .listen((data) {
-            // ignore: deprecated_member_use
-            data.documents.forEach((element) {
-              print(element['text']);
-            });
-          });
+      body: StreamBuilder(
+        stream: Firestore.instance // ignore: deprecated_member_use
+            .collection('chats/Es6kcu2Tji3PMLgT3FKL/messages')
+            .snapshots(),
+        builder: (ctx, streamSnapshot) {
+          if (streamSnapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          final documents = streamSnapshot.data.documents;
+          return ListView.builder(
+            itemCount: documents.length,
+            itemBuilder: (ctx, index) => Container(
+              padding: EdgeInsets.all(8),
+              child: Text(documents[index]['text']),
+            ),
+          );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            // ignore: deprecated_member_use
+          }),
     );
   }
 }
