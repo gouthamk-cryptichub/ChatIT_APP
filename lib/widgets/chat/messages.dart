@@ -5,10 +5,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import './message_bubble.dart';
 
 class Messages extends StatelessWidget {
+  Future getUser() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    return user;
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: FirebaseAuth.instance.currentUser,
+      future: getUser(),
       builder: (ctx, futureSnapshot) {
         if (futureSnapshot.connectionState == ConnectionState.waiting) {
           return Center(
@@ -28,11 +34,12 @@ class Messages extends StatelessWidget {
               }
               final chatDocs = chatSnapshot.data.documents;
               return ListView.builder(
-                  reverse: true,
-                  itemCount: chatDocs.length,
-                  itemBuilder: (ctx, index) => MessageBubble(
-                      chatDocs[index]['text'],
-                      chatDocs[index]['userId'] == futureSnapshot.data.uid),);
+                reverse: true,
+                itemCount: chatDocs.length,
+                itemBuilder: (ctx, index) => MessageBubble(
+                    chatDocs[index]['text'],
+                    chatDocs[index]['userId'] == futureSnapshot.data.uid),
+              );
             });
       },
     );
