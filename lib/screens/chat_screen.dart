@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../widgets/chat/messages.dart';
+import '../widgets/chat/new_message.dart';
+
 
 class ChatScreen extends StatelessWidget {
   @override
@@ -42,16 +44,10 @@ class ChatScreen extends StatelessWidget {
             Expanded(
               child: Messages(),
             ),
+            NewMessage()
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            Firestore.instance // ignore: deprecated_member_use
-                .collection('chats/Es6kcu2Tji3PMLgT3FKL/messages')
-                .add({'text': 'This was added now by button!'});
-          }),
     );
   }
 }
