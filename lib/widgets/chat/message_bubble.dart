@@ -7,52 +7,65 @@ class MessageBubble extends StatelessWidget {
   final bool isMe;
   final Key key;
   final String userName;
+  final String userImage;
 
-  MessageBubble(this.message, this.userName, this.isMe, {this.key});
+  MessageBubble(this.message, this.userName, this.userImage, this.isMe,
+      {this.key});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+    return Stack(
       children: [
-        Container(
-          decoration: BoxDecoration(
-            color: isMe ? Colors.grey[300] : Theme.of(context).primaryColor,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(12),
-              topRight: Radius.circular(12),
-              bottomLeft: !isMe ? Radius.circular(0) : Radius.circular(12),
-              bottomRight: isMe ? Radius.circular(0) : Radius.circular(12),
-            ),
-          ),
-          width: 150,
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-          margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-          child: Column(
-            crossAxisAlignment:
-                isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-            children: [
-              Text(
-                userName,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: isMe
-                      ? Colors.black
-                      : Theme.of(context).accentTextTheme.title.color,
+        Row(
+          mainAxisAlignment:
+              isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: isMe ? Colors.grey[300] : Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  topRight: Radius.circular(12),
+                  bottomLeft: !isMe ? Radius.circular(0) : Radius.circular(12),
+                  bottomRight: isMe ? Radius.circular(0) : Radius.circular(12),
                 ),
               ),
-              Text(
-                message,
-                style: TextStyle(
-                    color: isMe
-                        ? Colors.black
-                        : Theme.of(context).accentTextTheme.title.color),
-                textAlign: isMe ? TextAlign.end : TextAlign.start,
+              width: 160,
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+              margin: EdgeInsets.symmetric(vertical: 14, horizontal: 8),
+              child: Column(
+                crossAxisAlignment:
+                    isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    userName,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: isMe
+                          ? Colors.black
+                          : Theme.of(context).accentTextTheme.title.color,
+                    ),
+                  ),
+                  Text(
+                    message,
+                    style: TextStyle(
+                        color: isMe
+                            ? Colors.black
+                            : Theme.of(context).accentTextTheme.title.color),
+                    textAlign: isMe ? TextAlign.end : TextAlign.start,
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
+        ),
+        Positioned(
+          left: isMe ? null : 140,
+          right: isMe ? 140 : null,
+          child: CircleAvatar(backgroundImage: NetworkImage(userImage),),
         ),
       ],
+      overflow: Overflow.visible,
     );
   }
 }
