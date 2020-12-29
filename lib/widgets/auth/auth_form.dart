@@ -81,6 +81,9 @@ class _AuthFormState extends State<AuthForm> {
                   if (!_isLogin) UserImagePicker(_pidkedImage),
                   TextFormField(
                     key: ValueKey('email'),
+                    autocorrect: false,
+                      textCapitalization: TextCapitalization.none,
+                    enableSuggestions: false,
                     validator: (value) {
                       if (value.isEmpty || !value.contains('@')) {
                         return 'Please enter a valid E-mail Address.';
@@ -98,6 +101,9 @@ class _AuthFormState extends State<AuthForm> {
                   if (!_isLogin)
                     TextFormField(
                       key: ValueKey('uname'),
+                      autocorrect: true,
+                      textCapitalization: TextCapitalization.words,
+                      enableSuggestions: false,
                       validator: (value) {
                         if (value.isEmpty || value.length < 4) {
                           return 'Username must be at lest 4 characters long.';
